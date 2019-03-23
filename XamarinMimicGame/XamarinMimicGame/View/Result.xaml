@@ -1,14 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:head="clr-namespace:XamarinMimicGame.View.Utils"
              x:Class="XamarinMimicGame.View.Result">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Group One" FontSize="20"/>
-            <Label Text="30 points" FontSize="64" HorizontalOptions="Center"/>
-            <Label Text="Group Two" FontSize="20"/>
-            <Label Text="120 points" FontSize="64" HorizontalOptions="Center"/>
-            <Button Text="Play again"/>
+        <StackLayout Spacing="0">
+            <head:Header />
+            <StackLayout Style="{StaticResource Container}">
+                <Frame>
+                    <StackLayout Style="{StaticResource SpecialContainer}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Grupo One" FontSize="20" />
+                            <Label Text="{Binding Game.GroupOne.Name}" FontSize="20" />
+                        </StackLayout>
+                        <Label Text="{Binding Game.GroupOne.Score}" FontSize="100" HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+                <Frame>
+                    <StackLayout Style="{StaticResource SpecialContainer}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Grupo Two" FontSize="20" />
+                            <Label Text="{Binding Game.GroupTwo.Name}" FontSize="20" />
+                        </StackLayout>
+                        <Label Text="{Binding Game.GroupTwo.Score}" FontSize="100" HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+
+                <Button Text="Play Again" Command="{Binding PlayAgain}" />
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

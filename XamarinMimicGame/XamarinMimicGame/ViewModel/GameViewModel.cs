@@ -3,12 +3,49 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 using XamarinMimicGame.Annotations;
+using XamarinMimicGame.Model;
+using XamarinMimicGame.Persistance;
+using XamarinMimicGame.View;
+using Game = XamarinMimicGame.View.Game;
 
 namespace XamarinMimicGame.ViewModel
 {
-    public class GameViewModel: INotifyPropertyChanged
+    public class GameViewModel : INotifyPropertyChanged
     {
+        private bool _isVisibleBtnBtnStart;
+
+        private bool _isVisibleBtnShow;
+
+        private bool _isVisibleCountContainer;
+
+        private string _word;
+
+        private string _wordCount;
+
         private byte _wordPoints;
+
+        public GameViewModel(Group group)
+        {
+            Group = group;
+            GroupName = group.Name;
+
+            GroupNumber = group == DataPersistance.Game.GroupOne ? "Grupo One " : "Grupo Two ";
+
+            IsVisibleCountContainer = false;
+            IsVisibleBtnStart = false;
+            IsVisibleBtnShow = true;
+            Word = "********";
+
+            ShowWord = new Command(ShowWordAction);
+            Success = new Command(SuccessAction);
+            Fail = new Command(FailAction);
+            Start = new Command(StartAction);
+        }
+
+        public Group Group { get; set; }
+        public string GroupName { get; set; }
+        public string GroupNumber { get; set; }
+
         public byte WordPoints
         {
             get => _wordPoints;
@@ -19,7 +56,6 @@ namespace XamarinMimicGame.ViewModel
             }
         }
 
-        private string _word;
         public string Word
         {
             get => _word;
@@ -30,7 +66,6 @@ namespace XamarinMimicGame.ViewModel
             }
         }
 
-        private string _wordCount;
         public string WordCount
         {
             get => _wordCount;
@@ -41,7 +76,6 @@ namespace XamarinMimicGame.ViewModel
             }
         }
 
-        private bool _isVisibleCountContainer;
         public bool IsVisibleCountContainer
         {
             get => _isVisibleCountContainer;
@@ -52,18 +86,16 @@ namespace XamarinMimicGame.ViewModel
             }
         }
 
-        private bool _isVisibleStartContainer;
-        public bool IsVisibleStartContainer
+        public bool IsVisibleBtnStart
         {
-            get => _isVisibleStartContainer;
+            get => _isVisibleBtnBtnStart;
             set
             {
-                _isVisibleStartContainer = value;
-                OnPropertyChanged(nameof(IsVisibleStartContainer));
+                _isVisibleBtnBtnStart = value;
+                OnPropertyChanged(nameof(IsVisibleBtnStart));
             }
         }
 
-        private bool _isVisibleBtnShow;
         public bool IsVisibleBtnShow
         {
             get => _isVisibleBtnShow;
@@ -74,46 +106,109 @@ namespace XamarinMimicGame.ViewModel
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public Command ShowWord { get; set; }
         public Command Success { get; set; }
         public Command Fail { get; set; }
         public Command Start { get; set; }
 
-        public GameViewModel()
-        {
-            IsVisibleCountContainer = false;
-            IsVisibleStartContainer = false;
-            IsVisibleBtnShow = true;
-            Word = "***********";
-
-            ShowWord = new Command(ShowWordAction);
-            Success = new Command(ShowWordAction);
-            Fail = new Command(ShowWordAction);
-            Start = new Command(StartAction);
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void ShowWordAction()
         {
             WordPoints = 3;
-            Word = "Bark";
+            Word = "Dream";
+            var dif = DataPersistance.Game.Difficulty;
+            switch (dif)
+            {
+                case 0:
+                {
+                    //Random
+                    var rd = new Random();
+                    var niv = rd.Next(0, 3);
+                    var ind = rd.Next(0, DataPersistance.Words[niv].Length);
+                    Word = DataPersistance.Words[niv][ind];
+                    WordPoints = (byte) (niv == 0 ? 1 : niv == 1 ? 3 : 5);
+                    break;
+                }
+                case 1:
+                {
+                    //Easy
+                    var rd = new Random();
+                    var ind = rd.Next(0, DataPersistance.Words[dif - 1].Length);
+                    Word = DataPersistance.Words[dif - 1][ind];
+                    WordPoints = 1;
+                    break;
+                }
+                case 2:
+                {
+                    //Normal
+                    var rd = new Random();
+                    var ind = rd.Next(0, DataPersistance.Words[dif - 1].Length);
+                    Word = DataPersistance.Words[dif - 1][ind];
+                    WordPoints = 3;
+                    break;
+                }
+                default:
+                {
+                    //Hard
+                    var rd = new Random();
+                    var ind = rd.Next(0, DataPersistance.Words[dif - 1].Length);
+                    Word = DataPersistance.Words[dif - 1][ind];
+                    WordPoints = 5;
+                    break;
+                }
+            }
+
             IsVisibleBtnShow = false;
-            IsVisibleStartContainer = true;
+            IsVisibleBtnStart = true;
         }
 
         private void StartAction()
         {
-            IsVisibleStartContainer = false;
+            IsVisibleBtnStart = false;
             IsVisibleCountContainer = true;
 
-            var i = Persistance.DataPersistance.Game.WordTime;
-            Device.StartTimer(TimeSpan.FromSeconds(1), () => 
+            var i = DataPersistance.Game.WordTime;
+            WordCount = i.ToString();
+            i--;
+            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
             {
                 WordCount = i.ToString();
                 i--;
+                if (i < 0) WordCount = "No time left";
                 return true;
             });
+        }
+
+        private void SuccessAction()
+        {
+            Group.Score += WordPoints;
+
+            GoNextGroup();
+        }
+
+        private void FailAction()
+        {
+            GoNextGroup();
+        }
+
+        private void GoNextGroup()
+        {
+            Group group;
+            if (DataPersistance.Game.GroupOne == Group)
+            {
+                group = DataPersistance.Game.GroupTwo;
+            }
+            else
+            {
+                group = DataPersistance.Game.GroupOne;
+                DataPersistance.CurrentRound++;
+            }
+
+            if (DataPersistance.CurrentRound > DataPersistance.Game.Rounds)
+                Application.Current.MainPage = new Result();
+            else
+                Application.Current.MainPage = new Game(group);
         }
 
         [NotifyPropertyChangedInvocator]

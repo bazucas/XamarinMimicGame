@@ -1,28 +1,53 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:XamarinMimicGame.View.Utils"
+             xmlns:head="clr-namespace:XamarinMimicGame.View.Utils"
              x:Class="XamarinMimicGame.View.Game">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:LabelScoreConverter x:Key="convScore" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout>
-                <Label Text="Group"/>
-                <Label Text="{Binding PointsWord}"/>
-                <Label Text="{Binding Word}" HorizontalOptions="CenterAndExpand"/>
-                <Button Text="Show" IsVisible="{Binding IsVisibleBtnShow}"  Command="{Binding ShowWord}"/>
-            </StackLayout>
+        <StackLayout Spacing="0">
+            <head:Header />
+            <StackLayout Style="{StaticResource Container}">
 
-            <StackLayout IsVisible="{Binding IsVisibleCountContainer}">
-                <Label Text="{Binding CountText}" FontSize="100" HorizontalOptions="CenterAndExpand"/>
-                <Label Text="seg" HorizontalOptions="CenterAndExpand"/>
+                <Frame>
+                    <StackLayout Style="{StaticResource SpecialContainer}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding GroupNumber}" FontSize="32" />
+                            <Label Text="{Binding GroupName}" FontSize="32" />
+                        </StackLayout>
 
-                <StackLayout Orientation="Horizontal">
-                    <Button Text="Sweet!!!" BackgroundColor="LightGreen" Command="{Binding Success}"/>
-                    <Button Text="Nooo!!!" BackgroundColor="Red" Command="{Binding Fail}"/>
+                        <Label Text="{Binding WordPoints, Converter={StaticResource convScore}}" FontSize="32" />
+                        <Label Text="{Binding Word}" HorizontalOptions="CenterAndExpand" FontSize="64"
+                               FontAttributes="Bold" />
+                        <Button Text="Show" IsVisible="{Binding IsVisibleBtnShow}" Command="{Binding ShowWord}" />
+                    </StackLayout>
+                </Frame>
+
+                <StackLayout VerticalOptions="FillAndExpand">
+                    <StackLayout IsVisible="{Binding IsVisibleCountContainer}" VerticalOptions="FillAndExpand">
+                        <Label Text="{Binding WordCount}" FontSize="100" HorizontalOptions="CenterAndExpand" />
+                        <Label Text="seg" HorizontalOptions="CenterAndExpand" />
+
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                            <Button Text="Right" HorizontalOptions="Center" BackgroundColor="#00B22D"
+                                    TextColor="#FFFFFF" Command="{Binding Success}" />
+                            <Button Text="Wrong" HorizontalOptions="Center" BackgroundColor="#FF4000"
+                                    TextColor="#FFFFFF" Command="{Binding Fail}" />
+                        </StackLayout>
+                    </StackLayout>
+
+                    <Button Text="Start" IsVisible="{Binding IsVisibleBtnStart}" Command="{Binding Start}" />
+
                 </StackLayout>
+
             </StackLayout>
-            <StackLayout IsVisible="{Binding IsVisibleStartContainer}">
-                <Button Text="Start" Command="{Binding Start}"/>
-            </StackLayout>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

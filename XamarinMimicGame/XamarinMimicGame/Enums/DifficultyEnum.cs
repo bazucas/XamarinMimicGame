@@ -2,6 +2,7 @@
 {
     public enum DifficultyEnum
     {
+        Random,
         Easy,
         Normal,
         Hard

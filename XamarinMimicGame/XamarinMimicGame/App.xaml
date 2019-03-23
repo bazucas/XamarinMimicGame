@@ -1,8 +1,47 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XamarinMimicGame.App">
     <Application.Resources>
+
+        <ResourceDictionary>
+            <!-- Header -->
+            <Style TargetType="StackLayout" x:Key="Header">
+                <Setter Property="BackgroundColor" Value="#F2C14E" />
+                <Setter Property="Padding" Value="10" />
+            </Style>
+            <Style TargetType="Label" x:Key="HeaderTitle">
+                <Setter Property="TextColor" Value="#FFFFFF" />
+            </Style>
+
+            <!-- Container -->
+            <Style x:Key="Container" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="#FAFF7F" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="#F78053" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#F78053" />
+                <Setter Property="TextColor" Value="#FFFFFF" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+
+            <!-- SpecialContainer -->
+            <Style x:Key="SpecialContainer" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="#FBFFB3" />
+                <Setter Property="Padding" Value="10" />
+            </Style>
+
+            <Style TargetType="Frame">
+                <Setter Property="OutlineColor" Value="#F78053" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+        </ResourceDictionary>
 
     </Application.Resources>
 </Application>

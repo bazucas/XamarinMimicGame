@@ -5,13 +5,13 @@ using XamarinMimicGame.ViewModel;
 namespace XamarinMimicGame.View
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Result : ContentPage
+    public partial class StartGame : ContentPage
     {
-        public Result()
+        public StartGame()
         {
             InitializeComponent();
 
-            BindingContext = new ResultViewModel();
+            BindingContext = new SplashScreenViewModel();
         }
     }
 }

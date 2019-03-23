@@ -9,7 +9,7 @@ namespace XamarinMimicGame
         {
             InitializeComponent();
 
-            MainPage = new Begining();
+            MainPage = new StartGame();
         }
 
         protected override void OnStart()
