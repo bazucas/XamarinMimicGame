@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinMimicGame.View.Game">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout>
+                <Label Text="Group"/>
+                <Label Text="{Binding PointsWord}"/>
+                <Label Text="{Binding Word}" HorizontalOptions="CenterAndExpand"/>
+                <Button Text="Show" IsVisible="{Binding IsVisibleBtnShow}"  Command="{Binding ShowWord}"/>
+            </StackLayout>
+
+            <StackLayout IsVisible="{Binding IsVisibleCountContainer}">
+                <Label Text="{Binding CountText}" FontSize="100" HorizontalOptions="CenterAndExpand"/>
+                <Label Text="seg" HorizontalOptions="CenterAndExpand"/>
+
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Sweet!!!" BackgroundColor="LightGreen" Command="{Binding Success}"/>
+                    <Button Text="Nooo!!!" BackgroundColor="Red" Command="{Binding Fail}"/>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsVisibleStartContainer}">
+                <Button Text="Start" Command="{Binding Start}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

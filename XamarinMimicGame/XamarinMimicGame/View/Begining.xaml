@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinMimicGame.View.Begining">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Group One Name" />
+            <Entry Placeholder="(Optional)" Text="{Binding Game.GroupOne.Name}" />
+            <Label Text="Group One Name" />
+            <Entry Placeholder="(Optional)" Text="{Binding Game.GroupTwo.Name}" />
+            <Label Text="Difficulty" />
+            <Picker SelectedItem="{Binding Game.Difficulty}">
+                <Picker.Items>
+                    <x:String>Random</x:String>
+                    <x:String>Easy</x:String>
+                    <x:String>Normal</x:String>
+                    <x:String>Hard</x:String>
+                </Picker.Items>
+            </Picker>
+            <Label Text="Time per Round(sec)" />
+            <Entry Text="{Binding Game.WordTime}"/>
+            <Label Text="Rounds" />
+            <Entry Text="{Binding Game.Rounds}"/>
+
+            <Button Text="Start" Command="{Binding BeginCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
